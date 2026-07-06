@@ -3,17 +3,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import type { FeaturedWorkItem } from "@/lib/site-content";
 
 const FeaturedWork = () => {
-  const [featureWork, setFeatureWork] = useState<any>(null);
+  const [featureWork, setFeatureWork] = useState<FeaturedWorkItem[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/featured-work");
+        const res = await fetch("/api/content");
         if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
-        setFeatureWork(data?.featureWork);
+        setFeatureWork(data?.featuredWork || []);
       } catch (error) {
         console.error("Error fetching services:", error);
       }

@@ -1,23 +1,38 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import type { SiteContent } from "@/lib/site-content";
 
 const HeroSection = () => {
+  const [content, setContent] = useState<SiteContent["hero"] | null>(null);
+
+  useEffect(() => {
+    const load = async () => {
+      const res = await fetch("/api/content");
+      const data = await res.json();
+      setContent(data.hero);
+    };
+    load();
+  }, []);
+
   const socialIcon = [
     {
       img: "/images/icon/twitter-icon.svg",
-      href: "https://twitter.com",
-      icon: "Twitter",
+      href: content?.github || "https://github.com",
+      icon: "GitHub",
     },
     {
       img: "/images/icon/behance-icon.svg",
-      href: "https://behance.com",
-      icon: "Behance",
+      href: content?.linkedin || "https://linkedin.com",
+      icon: "LinkedIn",
     },
     {
       img: "/images/icon/dribble-icon.svg",
-      href: "https://dribble.com",
-      icon: "Dribble",
+      href: content?.dribbble || "https://dribbble.com",
+      icon: "Dribbble",
     },
   ];
   return (
@@ -46,9 +61,9 @@ const HeroSection = () => {
                 <span className="absolute bottom-2.5 right-5 w-4 h-4 bg-green-500 border-2 border-white rounded-full" />
               </div>
               <div className="flex flex-col gap-2 sm:gap-3 items-center text-center xs:items-start">
-                <h1>Elena Marsh</h1>
+                <h1>{content?.name || "Michał Noweetzki"}</h1>
                 <p className="text-violet-700 font-normal">
-                  Senior UI & UX Designer
+                  {content?.title || "Frontend Developer & UI Designer"}
                 </p>
                 <div className="flex items-center gap-2">
                   <Image
@@ -57,7 +72,7 @@ const HeroSection = () => {
                     width={20}
                     height={20}
                   />
-                  <p className="text-primary">Brooklyn, NYC</p>
+                  <p className="text-primary">{content?.location || "Warsaw, Poland"}</p>
                 </div>
               </div>
               <div className="flex flex-col md:flex-row items-center gap-4">
@@ -81,7 +96,7 @@ const HeroSection = () => {
                 </div>
                 <Button className="h-auto rounded-full p-0">
                   <Link
-                    href="#"
+                    href={`mailto:${content?.email || "hello@mnoweetzki.dev"}`}
                     className="inline-block p-0.5 rounded-full bg-[linear-gradient(96.09deg,_#9282F8_12.17%,_#F3CA4D_90.71%)]"
                   >
                     <span className="flex items-center gap-3 bg-primary hover:bg-[linear-gradient(96.09deg,_#9282F8_12.17%,_#F3CA4D_90.71%)] py-2.5 px-5 rounded-full">

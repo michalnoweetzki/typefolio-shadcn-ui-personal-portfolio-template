@@ -1,19 +1,20 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import type { SiteContent } from "@/lib/site-content";
 
 const AboutMe = () => {
-  const servicesBedge = [
-    "Graphic Design",
-    "User Experience",
-    "Mobile App Design",
-    "Brand Identity",
-    "Responsive Design",
-    "Prototyping",
-    "Illustration",
-    "Motion Graphics",
-    "Print Design",
-    "UI Development",
-    "Interactive Media",
-  ];
+  const [content, setContent] = useState<SiteContent["about"] | null>(null);
+
+  useEffect(() => {
+    const load = async () => {
+      const res = await fetch("/api/content");
+      const data = await res.json();
+      setContent(data.about);
+    };
+    load();
+  }, []);
   return (
     <section>
       <div className="container">
@@ -24,17 +25,10 @@ const AboutMe = () => {
                 About Me
               </p>
               <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[32px]">
-                Hey there. I'm Elena — UX/UI designer based in Brooklyn,
-                currently{" "}
-                <span className="bg-[linear-gradient(90deg,_rgba(243,202,77,0.4)_0%,_rgba(243,202,77,0.05)_100%)]">
-                  crafting digital products
-                </span>{" "}
-                at <span className="border-b-2">WrapPixel</span>, a SaaS startup
-                focused on productivity tools.
+                {content?.heading || "Hey there. I'm Michał — a frontend developer and UI designer based in Warsaw, creating modern web experiences that blend clean design with thoughtful engineering."}
               </h2>
               <h5 className="text-secondary font-normal">
-                Previously at Oak Studio, and creator of DesignKit and
-                MentalWell.
+                {content?.description || "I enjoy turning ideas into fast, elegant, and user-friendly products for startups, agencies, and ambitious brands."}
               </h5>
             </div>
             <div className="flex flex-col gap-4">
@@ -42,7 +36,7 @@ const AboutMe = () => {
                 Services
               </p>
               <div className="flex flex-wrap gap-2 sm:gap-3">
-                {servicesBedge?.map((value, index) => {
+                {content?.services?.map((value, index) => {
                   return (
                     <Badge
                       variant={"outline"}

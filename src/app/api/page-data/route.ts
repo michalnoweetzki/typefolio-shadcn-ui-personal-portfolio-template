@@ -3,59 +3,59 @@ import { NextResponse } from "next/server";
 const experienceData = [
     {
         icon: "/images/icon/tailwind-icon.svg",
-        role: "Product Designer, Tailwind",
+        role: "Frontend Developer & UI Engineer",
         location: "Remote",
-        startYear: "2022",
+        startYear: "2023",
         endYear: "Present",
         bulletPoints: [
-            "Led end-to-end redesign of dashboard UI, improving user retention by 23%",
-            "Collaborated with engineers and product managers to ship features faster",
-            "Designed components used in a system adopted by 4+ internal teams"
+            "Built polished, production-ready web apps with Next.js, React, and Tailwind CSS",
+            "Collaborated closely with product and design teams to ship fast, accessible interfaces",
+            "Improved front-end performance and component consistency across several projects"
         ]
     },
     {
         icon: "/images/icon/asana-icon.svg",
-        role: "UI/UX Designer - Asana",
-        location: "New York, NY",
-        startYear: "2019",
-        endYear: "2022",
+        role: "Product Designer & Developer",
+        location: "Warsaw, Poland",
+        startYear: "2020",
+        endYear: "2023",
         bulletPoints: [
-            "Created design systems for client projects across finance and healthcare",
-            "Conducted user testing and research to validate designs",
-            "Helped junior designers grow via mentorship"
+            "Designed and developed landing pages, dashboards, and brand experiences for digital products",
+            "Turned client ideas into modern interfaces with a strong focus on usability",
+            "Created reusable UI patterns that sped up delivery across multiple launches"
         ]
     },
 ]
 
 const educationData = [
     {
-        date: "Sep 2015 - May 2019",
-        title: "B.F.A. in Graphic Design",
-        subtitle: "Pratt Institute — Brooklyn, NY"
+        date: "2018 - 2022",
+        title: "B.Sc. in Computer Science",
+        subtitle: "University of Warsaw — Warsaw, Poland"
     },
     {
-        date: "Mar 2021 - Aug 2021",
-        title: "UX Design Certificate",
-        subtitle: "Google UX Design - Coursera"
+        date: "2021",
+        title: "UI/UX Design Certificate",
+        subtitle: "Google UX Design — Coursera"
     },
     {
-        date: "Jan 2020 - Mar 2020",
-        title: "Front-End Web Development Bootcamp",
-        subtitle: "General Assembly — New York, NY"
+        date: "2020",
+        title: "Frontend Development Bootcamp",
+        subtitle: "General Assembly — Remote"
     }
 ];
 
 
 const projectOverview = {
     caseStudies: [
-        { name: "Wellnest", url: "#" },
-        { name: "ScoutHire", url: "#" },
+        { name: "Astra Studio", url: "#" },
+        { name: "Northstar Finance", url: "#" },
     ],
     sideProjects: [
-        { name: "Formless", url: "#" },
-        { name: "Gridsnap", comingSoon: true },
-        { name: "OrbitPay Mobile App", comingSoon: true },
-        { name: "Siteflow Page Builder", comingSoon: true },
+        { name: "Design System Toolkit", url: "#" },
+        { name: "Motion UI Playground", comingSoon: true },
+        { name: "Portfolio CMS", comingSoon: true },
+        { name: "AI Landing Page Generator", comingSoon: true },
     ]
 };
 

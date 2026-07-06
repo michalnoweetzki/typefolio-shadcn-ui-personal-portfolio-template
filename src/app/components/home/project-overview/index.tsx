@@ -2,17 +2,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import type { ProjectOverviewData } from "@/lib/site-content";
 
 const ProjectOverview = () => {
-  const [projectData, setProjectData] = useState<any>(null);
+  const [projectData, setProjectData] = useState<ProjectOverviewData | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/page-data");
+        const res = await fetch("/api/content");
         if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
-        setProjectData(data?.projectOverview);
+        setProjectData(data?.projectOverview || null);
       } catch (error) {
         console.error("Error fetching services:", error);
       }

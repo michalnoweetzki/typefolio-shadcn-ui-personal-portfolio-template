@@ -1,16 +1,17 @@
 "use client";
 import { useEffect, useState } from "react";
+import type { EducationItem } from "@/lib/site-content";
 
 const Education = () => {
-  const [educationData, setEducationData] = useState<any>(null);
+  const [educationData, setEducationData] = useState<EducationItem[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/page-data");
+        const res = await fetch("/api/content");
         if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
-        setEducationData(data?.educationData);
+        setEducationData(data?.educationData || []);
       } catch (error) {
         console.error("Error fetching services:", error);
       }
