@@ -1,3 +1,4 @@
+import { put } from "@vercel/blob";
 import { promises as fs } from "fs";
 import path from "path";
 import { NextResponse } from "next/server";
@@ -17,6 +18,15 @@ export async function POST(request: Request) {
   const buffer = Buffer.from(bytes);
   const ext = path.extname(file.name) || ".png";
   const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`;
+
+  if (process.env.BLOB_READ_WRITE_TOKEN) {
+    const blob = await put(filename, buffer, {
+      access: "public",
+      contentType: file.type || "application/octet-stream",
+    });
+    return NextResponse.json({ url: blob.url });
+  }
+
   const uploadDir = path.join(process.cwd(), "public", "uploads");
   const uploadPath = path.join(uploadDir, filename);
 
