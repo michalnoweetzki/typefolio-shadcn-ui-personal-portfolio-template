@@ -1,6 +1,6 @@
-import { list, put } from "@vercel/blob";
 import { promises as fs } from "fs";
 import path from "path";
+import { supabase } from "@/lib/supabase";
 
 export type FeaturedWorkItem = {
   title: string;
@@ -152,7 +152,6 @@ const defaultContent: SiteContent = {
   },
 };
 
-const contentBlobName = "site-content.json";
 const contentPath = path.join(process.cwd(), "src", "data", "site-content.json");
 
 async function readLocalContent(): Promise<SiteContent | null> {
@@ -170,15 +169,11 @@ async function writeLocalContent(content: SiteContent): Promise<void> {
 }
 
 export async function getSiteContent(): Promise<SiteContent> {
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
+  if (supabase) {
     try {
-      const { blobs } = await list({ prefix: contentBlobName, limit: 10 });
-      const savedBlob = blobs.find((blob) => blob.pathname === contentBlobName || blob.pathname.endsWith(contentBlobName));
-      if (savedBlob?.url) {
-        const response = await fetch(savedBlob.url);
-        if (response.ok) {
-          return (await response.json()) as SiteContent;
-        }
+      const { data, error } = await supabase.from("site_content").select("content").eq("id", "main").single();
+      if (!error && data?.content) {
+        return data.content as SiteContent;
       }
     } catch {
       // fall back to local file
@@ -195,14 +190,13 @@ export async function getSiteContent(): Promise<SiteContent> {
 }
 
 export async function saveSiteContent(content: SiteContent): Promise<SiteContent> {
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
+  if (supabase) {
     try {
-      await put(contentBlobName, JSON.stringify(content, null, 2), {
-        access: "public",
-        contentType: "application/json",
-      });
-      await writeLocalContent(content);
-      return content;
+      const { error } = await supabase.from("site_content").upsert({ id: "main", content });
+      if (!error) {
+        await writeLocalContent(content);
+        return content;
+      }
     } catch {
       // fall back to local file
     }

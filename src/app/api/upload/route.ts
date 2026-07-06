@@ -1,7 +1,7 @@
-import { put } from "@vercel/blob";
 import { promises as fs } from "fs";
 import path from "path";
 import { NextResponse } from "next/server";
+import { supabase } from "@/lib/supabase";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,12 +19,16 @@ export async function POST(request: Request) {
   const ext = path.extname(file.name) || ".png";
   const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`;
 
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
-    const blob = await put(filename, buffer, {
-      access: "public",
+  if (supabase) {
+    const { data, error } = await supabase.storage.from("portfolio-images").upload(filename, buffer, {
       contentType: file.type || "application/octet-stream",
+      upsert: true,
     });
-    return NextResponse.json({ url: blob.url });
+
+    if (!error && data?.path) {
+      const { data: publicData } = supabase.storage.from("portfolio-images").getPublicUrl(data.path);
+      return NextResponse.json({ url: publicData.publicUrl });
+    }
   }
 
   const uploadDir = path.join(process.cwd(), "public", "uploads");
