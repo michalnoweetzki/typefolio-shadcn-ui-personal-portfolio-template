@@ -100,6 +100,8 @@ export default function CmsPage() {
           description: "Add description",
           roles: ["Role"],
           image: "/images/feature-work/feature-img-1.png",
+          slug: "new-project",
+          details: "Add a short project overview for the detail page.",
         },
       ],
     }));
@@ -278,12 +280,20 @@ export default function CmsPage() {
                           <input value={project.title} onChange={(e) => updateProject(index, "title", e.target.value)} className="rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2.5" />
                         </label>
                         <label className="flex flex-col gap-2 text-sm font-medium text-slate-700">
+                          Slug
+                          <input value={project.slug || ""} onChange={(e) => updateProject(index, "slug", e.target.value)} className="rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2.5" />
+                        </label>
+                        <label className="flex flex-col gap-2 text-sm font-medium text-slate-700">
                           Roles
                           <input value={project.roles.join(", ")} onChange={(e) => updateProject(index, "roles", e.target.value.split(",").map((s) => s.trim()).filter(Boolean))} className="rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2.5" />
                         </label>
                         <label className="flex flex-col gap-2 text-sm font-medium text-slate-700 md:col-span-2">
                           Description
                           <textarea value={project.description} onChange={(e) => updateProject(index, "description", e.target.value)} className="min-h-24 rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2.5" />
+                        </label>
+                        <label className="flex flex-col gap-2 text-sm font-medium text-slate-700 md:col-span-2">
+                          Project details
+                          <textarea value={project.details || ""} onChange={(e) => updateProject(index, "details", e.target.value)} className="min-h-32 rounded-2xl border border-slate-300 bg-slate-50 px-3 py-2.5" />
                         </label>
                         <label className="flex flex-col gap-2 text-sm font-medium text-slate-700 md:col-span-2">
                           Image

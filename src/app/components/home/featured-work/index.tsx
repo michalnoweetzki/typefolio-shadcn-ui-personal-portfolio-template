@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import type { FeaturedWorkItem } from "@/lib/site-content";
+import { getProjectSlug, type FeaturedWorkItem } from "@/lib/site-content-model";
 
 const FeaturedWork = () => {
   const [featureWork, setFeatureWork] = useState<FeaturedWorkItem[]>([]);
@@ -41,15 +41,16 @@ const FeaturedWork = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 border-t border-border">
-            {featureWork?.map((value: any, index: number) => {
+            {featureWork?.map((value: FeaturedWorkItem, index: number) => {
               const isRightCol = index % 2 === 1;
+              const projectHref = `/projects/${getProjectSlug(value)}`;
 
               return (
                 <div
                   key={index}
                   className={`group flex flex-col gap-3.5 sm:gap-5 p-3.5 sm:p-6 ${isRightCol ? "md:border-l md:border-border" : ""}`}
                 >
-                  <Link href={"/"} className="overflow-hidden">
+                  <Link href={projectHref} className="overflow-hidden">
                     <Image
                       src={value?.image}
                       alt="Image"
@@ -59,7 +60,7 @@ const FeaturedWork = () => {
                     />
                   </Link>
                   <div className="flex flex-col gap-1 sm:gap-2 px-2">
-                    <Link href={"/"}>
+                    <Link href={projectHref}>
                       <h4>{value?.title}</h4>
                     </Link>
                     <div className="flex">
